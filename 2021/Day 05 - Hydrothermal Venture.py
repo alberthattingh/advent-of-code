@@ -11,7 +11,7 @@ def readInputData():
     return lineSegments
 
 
-def plotPoints(lines):
+def plotPoints(lines, diagonals = False):
     points = [[0 for y in range(1000)] for x in range(1000)]
 
     for [start, end] in lines:
@@ -30,6 +30,16 @@ def plotPoints(lines):
             for x in range(x1, x2+step, step):
                 points[x][y1] += 1
 
+        else:
+            if diagonals:
+                xStep = 1 if x1 <= x2 else -1
+                yStep = 1 if y1 <= y2 else -1
+
+                y = y1 - yStep
+                for x in range(x1, x2+xStep, xStep):
+                    y += yStep
+                    points[x][y] += 1
+
     return points
 
 
@@ -46,5 +56,19 @@ def s1():
     print(f'Solution 1: {overlaps}')
 
 
+def s2():
+    lines = readInputData()
+    points = plotPoints(lines, True)
+
+    overlaps = 0
+    for x in points:
+        for y in x:
+            if y > 1:
+                overlaps += 1
+
+    print(f'Solution 2: {overlaps}')
+
+
 if __name__ == '__main__':
     s1()
+    s2()
